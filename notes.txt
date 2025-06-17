@@ -1,0 +1,359 @@
+Hello, guys.
+
+Welcome back to playwright From zero to Hero.
+
+And in this lesson we will talk about fixtures.
+
+So fixtures is a very important concept of the playwright architecture that you guys need to understand
+
+and be familiar with because it's very powerful.
+
+Test fixtures are used to establish environment for each test.
+
+Given the test, everything it needs and nothing else.
+
+Also, test fixtures are isolated between the test.
+
+With test fixtures, you can group tests based on their meaning instead of their common setup.
+
+Test fixtures are kind of similarly to before and after hook or before each and after each hook, but
+
+a way more powerful.
+
+In one of our previous lessons, we already created a fixture which was a global URL.
+
+Yeah, it looks very simple.
+
+It's just an empty placeholder that we used inside of the playwright config dots, but technically this
+
+is a fixture.
+
+We extended a test object with new capabilities and when we use this fixture inside of the test, the
+
+global URL was initialized as a precondition for running the test and to better demonstrate the capabilities.
+
+Let me create a new test and I call it test with.
+
+Fixtures, dot spec, dot ts.
+
+Just for the convenience, I'll take the code from the.
+
+Use page objects page and remove some of the stuff that we don't need for the demonstration.
+
+So I will remove the very first test.
+
+Also, I remove portion of this test, keeping only these steps when we navigate to the form layout
+
+page and filling out two of the forms.
+
+Submit using the grid form and submit inline form.
+
+So first of all, let's run this test to see that it is working.
+
+All right.
+
+Test is working fine.
+
+So as I have mentioned before, fixtures are very useful to create the environment in advance for our
+
+test.
+
+So looking in this test, what we have, we need to navigate to the home page and technically to validate
+
+just these two step.
+
+We also need to be on the form layout page so we can tell that.
+
+Navigate to the home page and navigate to the form.
+
+Layout page is a precondition for our environment and only these two steps related to the actual test.
+
+So technically we can replace before each hook and this step with a fixture which will prepare the test
+
+environment for us.
+
+And the test itself will only execute the steps that related to validation.
+
+So let's do this.
+
+And our first step will be to create the fixture that will be responsible to navigate to the form layout
+
+page.
+
+We going back to the test options over here and create a new test option type.
+
+Form.
+
+Layouts.
+
+Page and type will be a string.
+
+It will be a simple fixture as well.
+
+Then I will create this fixture inside of this object form layout page column, and then add a function
+
+of what this fixture will do.
+
+I think.
+
+In this fixture, I will need a page fixture as well.
+
+And the second method called use I will talk about later.
+
+Why do we need it for and create a function?
+
+Then inside of the function I want to put all the tests that are needed to navigate to the form layout
+
+page.
+
+These are the steps page.
+
+Go to home page, then click on the Forms menu and click on the forms layout menu and we will be navigated
+
+to the form layouts page.
+
+Then, in order to activate this feature, we need to use a keyword use and inside we need to provide
+
+the argument of the string.
+
+And in our example it can be just a simple empty string because we will not use this value for anything
+
+else.
+
+Well, all right.
+
+The fixture was created now question how to use this fixture?
+
+Going back to our test and look at the import right now, we importing a test fixture from the playwright
+
+library, but we want to import instead of playwright library.
+
+We want to import from our newly created test options here.
+
+Now, this test method will use extended version of the test object that includes our fixture.
+
+And then we need to pass a newly created fixture as the argument inside of our test, which is form
+
+layouts page.
+
+That's it.
+
+And now what we can do, we can delete this step and we can delete before each.
+
+It's not needed anymore.
+
+Those two steps are handled by our fixture.
+
+Now let's run this test.
+
+All right.
+
+You can see it worked.
+
+But did you notice how fast the test was executed?
+
+So let me demonstrate you one more time.
+
+So I go to use page objects test.
+
+I'll comment these two steps, which are similar.
+
+Right?
+
+And I will execute this test with a normal flow with having a for each hook, with navigating to the
+
+forms layout page and let's see how long does it take.
+
+So I run this test.
+
+Formerly out page filling out the form.
+
+Test is done.
+
+Duration is 4.5 seconds.
+
+Now, going back to our modified test with a fixture and running this one more time.
+
+Past is past and it took only 2.5 seconds much, much faster.
+
+This happened because our form's layout fixture was initialized before test even kicked in and browser
+
+was open.
+
+So Playwright began processing this request even before browser was loaded and prepare the environment
+
+for us.
+
+In this case, what's only left is to execute these two steps.
+
+So you notice probably that we trigger this form's layout page fixture.
+
+What?
+
+We didn't use it right?
+
+So how we can run this fixture automatically, there is a way if you put this fixture into the array
+
+like this.
+
+You can pass the second argument, which is an options.
+
+Auto.
+
+True.
+
+By providing auto true.
+
+You are saying that forms layout fixtures should be automatically initialized as a very very first thing
+
+when we run the test.
+
+So forms layout fixture run even before.
+
+Before each or before all hook as a very first thing.
+
+So we can now remove this fixture from the test itself, run it again.
+
+And it works as well and as fast as before so we can remove these two steps from the test.
+
+All right.
+
+What else can we do?
+
+We also know that for our test, we need an instance of page manager because page manager is responsible
+
+for access to our page objects and accessing different methods.
+
+Why not making a fixture to handle this for us instead?
+
+So let's do this as well.
+
+So we create a second fixture and I call it page manager and I need to create a new instance over here.
+
+Page Manager.
+
+And import it from.
+
+Here.
+
+Page manager of the type page manager.
+
+So new page manager is created and we need to create a new function I think.
+
+We also need a page fixture.
+
+We also need use and we simply copy this step from the test inside of our fixture and then we type await
+
+use.
+
+PM and something is wrong with use.
+
+Okay.
+
+It doesn't like typing because.
+
+Okay.
+
+The import didn't work here.
+
+Let's make the import correctly.
+
+All right, now everything looks fine.
+
+Page manager was imported correctly.
+
+It has correct type.
+
+And we have a page manager over here and we don't have any issues.
+
+Now we can use this page manager fixture instead of the default page fixture of the playwright replacing
+
+it right here and we can delete it from the test completely.
+
+We have a red squigglies over here, so we replacing them with page manager and page manager and we
+
+can remove this import from here.
+
+That's it.
+
+So let's run this test one more time.
+
+Now and it's working perfectly fine.
+
+So we changed the default fixture of the page playwright to our custom page manager fixture, which
+
+is responsible right now for building the page manager object that will responsible for all of our objects.
+
+And one more thing.
+
+You can also set up a dependency between a fixtures.
+
+For example, right now this fixture we configure to automatically load for any environment and for
+
+any task.
+
+But if you want to load this fixture only in case a page manager fixture is working, you can create
+
+a dependency between the fixtures.
+
+So let me remove this setting that I used before and here I will add forms layout page fixture as the
+
+fixture dependency for the page manager fixture.
+
+Now what's going to happen?
+
+Page manager fixture will trigger form's layout page to initialize first, then the page manager will
+
+be initialized and the instance of the page manager will be passed into our test and this will work
+
+as well.
+
+All right.
+
+You see, test is working and it is super fast.
+
+Also, what is important to know is the sequence of the execution commands inside of the fixture method.
+
+So all methods and commands that you run before the use block will be executed as a precondition before
+
+running the test and setting up your environment and everything that you put after the use block will
+
+work as a tear down, something that have to be executed after the test is completed.
+
+So, for example, if I type here, something like console dot log.
+
+Tear down and run this test one more time.
+
+You can see teardown message is printed and if you have noticed, it happened after the test was completed.
+
+So also the sequence of the execution when you trigger to run the test, first thing will be initialize
+
+this step, then will be initialize page manager.
+
+Then the test will execute all the steps related to that.
+
+Then page manager will be teardown and then forms layout fixture will be teardown as well and this message
+
+will be printed to the console.
+
+So this is the sequence of the execution.
+
+All right, guys.
+
+So let's quickly summarize what we did in this lesson.
+
+Fixture is very powerful tool in the playwright to set up the environment.
+
+You can create a custom fixtures extending the base test object.
+
+Then your fixtures will act as a setup and teardown methods for your test Setting up the environment.
+
+You can then pass your fixtures inside of the test and use them inside of the test.
+
+You can create as many fixtures as you want.
+
+You can manage a dependencies between of the fixtures and group them meaningfully based on the logic
+
+of your application.
+
+All right, that's it, guys, and see you in the next lesson.

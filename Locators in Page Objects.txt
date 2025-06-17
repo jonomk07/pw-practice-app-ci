@@ -1,0 +1,207 @@
+Hello, guys.
+
+Welcome back to playwright From zero to Hero.
+
+And in this lesson we will continue refactoring our navigation page and we're going to make a changes
+
+related to our locator.
+
+According to the playwright recommendation for the page objects, So playwright recommends separate
+
+locators from the functional methods.
+
+So this is our functional method and the locator located inside of this method to perform the click
+
+to the form layouts, for example.
+
+But playwright recommends to keep all locators separately from the methods itself.
+
+How to do that.
+
+So let me show you.
+
+First of all, we need to create a fields for all the locators that we want to remove from the methods.
+
+This is get by text form layouts, date picker, smart table toaster and tooltip page.
+
+So let's create a new fields for them read only and we need to provide a meaningful name for each of
+
+those.
+
+For example, first one will be form layouts menu item and the type of this field is locator.
+
+And we click enter and locator object is imported from the playwright test library.
+
+And just following the same example, we need to create the rest of the fields for each of the locator
+
+that we want to remove from the functional method.
+
+Okay, this part is done.
+
+And now we need to assign the value of our locator to all these fields that we just created.
+
+And we of course, doing this inside of the constructor.
+
+And I called this form layout menu item equals and take the locator from the method, put it here,
+
+and then replace this field name inside of the method like this.
+
+That's it.
+
+So we removed the locator from the method and assign to its own property name.
+
+And then we call this property name or field inside of the method and performing the click.
+
+So following the same approach, we need to make a refactoring for the rest of the methods inside of
+
+our page object.
+
+All right, we done this.
+
+And now let's look at our final result.
+
+So all locators right now together inside of the constructor, the values of the locator assigned to
+
+the fields.
+
+And we call those fields inside of the functional methods.
+
+So let's run this test real quick to make sure that everything is working, how it was before running
+
+this test.
+
+Yes.
+
+And test is working exactly how it was before.
+
+So this is the way how playwright recommends organizing page objects and the main argument behind this
+
+approach Why do we need to use locators independently from the functional methods?
+
+Because you can reuse the instance that points to the locator into different methods inside of the page
+
+object.
+
+So you kind of do not duplicating your locators and your locator becomes unique.
+
+Once you define this locator, you just reuse this field in other methods and you avoid duplication.
+
+Remember this dry principle Don't repeat yourself.
+
+So this approach follows this dry principle.
+
+But in my opinion, this is not very good approach because it kind of violating the second suggested
+
+principle, which is keep it stupid, simple, and let me explain why.
+
+So this is a pretty simple page object with just five small methods related to this page.
+
+But in the real life projects, your typical page object may have 1520 different methods.
+
+In each of those methods may have several locators.
+
+So over the time, what your page object would look like is something like this.
+
+So let me do this.
+
+I will just copy paste this multiple times so your page object may look like this.
+
+A whole bunch of fields defined in the class and the same you will have inside of your constructor like
+
+this.
+
+And now when you look at this kind of view, I think you may agree with me that it's kind of difficult
+
+to read the names of each of the method.
+
+And when you have like 30 or 40 locators, it's very easy to get lost inside of them.
+
+And just to understand, okay, do I have the locator that I need?
+
+And what also very often happen and I saw it on the other projects that if few engineers working on
+
+the same project, they become creating a duplication of the locators.
+
+But using a different name.
+
+For example, they do something like this.
+
+This is the tooltip menu item, but other engineer can call it tooltip menu selector, for example.
+
+And now we can create the second field.
+
+Read only tooltip menu selector locator.
+
+And now our list of the locators have to exactly the same locators, but with a different name.
+
+And also, sometimes you may have a situation of the dead locators that are just existing in the list
+
+but never used.
+
+So that's why technically I don't like this approach of keeping the locators like that.
+
+Also, what to do with locators like this.
+
+Look at this.
+
+So we have a locator here.
+
+Get by title where we pass the parameter inside of the locator instead of actual value of the locator.
+
+You cannot remove this type of the locator from method inside of the constructor because you will have
+
+a complaint on this property that does not exist.
+
+So you end up having locators in two different places.
+
+Some of the locators will be inside of your constructors, but some of them which you can't remove,
+
+will be still inside of your methods and it will be mix again, right?
+
+So looking at all of those arguments, I personally prefer not following this approach and not using
+
+the locators inside of the constructor and separating them from the actual functional method.
+
+And if you're worrying about duplications of your locators in the few different methods that you need
+
+to copy paste the locators, just trust me.
+
+If your page object methods are functional enough covering good scope, most likely you will have two
+
+maximum three duplications across of all your methods.
+
+But when you have locators inside of your functional methods, it's much easier to debug and it's much
+
+easier to maintain the code because if the test is failing, it's telling you exactly the line of code
+
+where it fails.
+
+You just open this line of code and seeing the locator that was called and it's much easier to debug.
+
+So here I would prefer using a keep it stupid simple principle and do not over complicate the code and
+
+keep your locators inside of the methods related to the page object.
+
+Again, this is my personal opinion guys.
+
+It's up to you how to build the page objects.
+
+From my experience, I always keep locators inside of the functional methods of page objects, and it
+
+always worked just fine for me and it always was easy to debug, easy to fix and maintain this type
+
+of code.
+
+So I'm following the keep it stupid simple principle.
+
+So that's it guys.
+
+Let me revert all the changes that I did for this lesson because I will continue following this class
+
+with just a standard approach where our constructor have just a page initialized and our locators will
+
+be inside of the methods.
+
+All right.
+
+Thank you, guys, and

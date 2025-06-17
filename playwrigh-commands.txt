@@ -1,0 +1,55 @@
+ npm init playwright@latest --force
+ npx playwright test --ui
+ npx playwright test usePageObjects.spec.ts --project=chromium
+ npx playwright test  uiComponents.spec.ts --project=chromium
+npm i @faker-js/faker --save-dev --force
+------------------------------------------
+
+in the package.json create your script 
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "pageObjects-chrome": "npx playwright test usePageObjects.spec.ts --project=chromium",
+    "pageObjects-firefox": "npx playwright test usePageObjects.spec.ts --project=firefox",
+    "pageObjects-all": "npm run pageObjects-chrome && npm run pageObjects-firefox"
+  },
+
+ npm run pageObjects-chrome
+----------------------------------------------
+
+URL=http://uitestingplayground.com/ajax 
+npx playwright test usePageObjects.spec.ts --project=chromium
+
+run your prod config
+---------------------
+npx playwright test --config=playwright-prod.config.ts
+
+$  npx playwright test --project=chromium --grep @smoke
+ npx playwright test --project=chromium --grep @smoke
+
+=======================================================
+report 
+https://www.npmjs.com/package/allure-playwright
+
+npm install -D allure-playwright --force
+
+npm install -g allure-commandline --save-dev
+
+allure generate allure-results -o allure-report --clean
+
+npx allure-commandline generate allure-results -o allure-report --clean
+ npx playwright test --update-snapshots
+
+ -----------------------------------------
+
+ using docker 
+ docker build -t pw-pageobject-test .
+
+ docker images (check image)
+
+  1. docker run -it pw-pageobject-test (run image)
+
+  2. npm run pageObjects-chrome
+
+  Get report from docker
+  docker-compose up --build
